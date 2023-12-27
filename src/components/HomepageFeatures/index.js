@@ -4,35 +4,32 @@ import styles from './styles.module.css';
 
 const FeatureList = [
   {
-    title: 'Easy to Use',
-    Svg: require('@site/static/img/undraw_docusaurus_mountain.svg').default,
-    description: (
-      <>
-        Docusaurus was designed from the ground up to be easily installed and
-        used to get your website up and running quickly.
-      </>
-    ),
-  },
-  {
-    title: 'Focus on What Matters',
-    Svg: require('@site/static/img/undraw_docusaurus_tree.svg').default,
-    description: (
-      <>
-        Docusaurus lets you focus on your docs, and we&apos;ll do the chores. Go
-        ahead and move your docs into the <code>docs</code> directory.
-      </>
-    ),
-  },
-  {
-    title: 'Powered by React',
+    title: 'A place for experimentation',
     Svg: require('@site/static/img/undraw_docusaurus_react.svg').default,
     description: (
       <>
-        Extend or customize your website layout by reusing React. Docusaurus can
-        be extended while reusing the same header and footer.
+        The Riff.CC Lab is used to test software, distributed storage, infrastructure, automation and many other things. It's a home lab, a place to experiment and learn.
       </>
     ),
   },
+  {
+    title: 'Open source',
+    Svg: require('@site/static/img/undraw_docusaurus_mountain.svg').default,
+    description: (
+      <>
+        The Riff.CC Lab is built almost entirely out of open source software. It also helps us make open source software!
+      </>
+    ),
+  },
+  {
+    title: 'Self-hosted - and self-hosting',
+    Svg: require('@site/static/img/undraw_docusaurus_tree.svg').default,
+    description: (
+      <>
+        The entire "recipe" for building the Riff.CC Lab is open source - and it's available right here. Mix and match whatever you want and build your own.
+      </>
+    ),
+  }
 ];
 
 function Feature({Svg, title, description}) {
