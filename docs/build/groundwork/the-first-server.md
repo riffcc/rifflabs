@@ -35,6 +35,8 @@ The cattle approach suggests naming machines after what they do, or some other m
 
 Our compromise is simple - physical machines that are likely to stick around get assigned pet names, and virtual machines or deployments that do not have a physical presence are given purpose-related names such as `netbird01` - cattle names. Routers and switches and other networking gear also get cattle names.
 
+:::
+
 ## Logging into Proxmox for the first time
 Once you've installed Proxmox, you'll want to log into it. Open a web browser and navigate to the IP address you assigned to your Proxmox host, using HTTPS, and port 8006. For example, `https://10.1.1.151:8006/`. You'll be greeted with a login screen. The default username is `root` and the password is the one you set during installation.
 
