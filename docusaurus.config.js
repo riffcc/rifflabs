@@ -84,6 +84,12 @@ const config = {
             position: 'left',
             label: 'Monitor',
           },
+          {
+            type: 'docSidebar',
+            sidebarId: 'automateSidebar',
+            position: 'left',
+            label: 'Automate',
+          },
         ],
       },
       footer: {
