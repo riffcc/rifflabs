@@ -32,7 +32,7 @@ Once you know the IP address, open your terminal or WSL and type the following c
 
 `ssh-keygen -t ed25519`
 
-When prompted, enter a password that you can remember but that is hard to guess. This will be used to encrypt your SSH key, which is used to log into your servers. Typically four or five random word password is sufficient.
+When prompted, enter a password that you can remember but that is hard to guess. This will be used to encrypt your SSH key, which is used to log into your servers. Typically a four or five random word password is sufficient.
 
 Once you've done that, you'll need to copy your SSH key to your servers. You can do this by typing the following command:
 
