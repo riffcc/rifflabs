@@ -199,7 +199,7 @@ Let's take a look at the `root-user` role first. We'll start with the `tasks/mai
 
 - name: Append additional_root_public_keys to combined_keys if defined and non-empty
   set_fact:
-    combined_keys: "{{ combined_keys + '\n' + (additional_root_public_keys }}"
+    combined_keys: "{{ combined_keys + '\n' + (additional_root_public_keys | join('\n')) }}"
   when: additional_root_public_keys is defined and additional_root_public_keys | length > 0
 
 - name: Write combined_keys to ~/.ssh/authorized_keys
@@ -334,20 +334,20 @@ And we create a basic role that will disable root login and password authenticat
 - name: Edit sshd config
   lineinfile:
     path: /etc/ssh/sshd_config
-    regexp: '^#?{{ item.regexp }}'
+    regexp: '^(#?\s*)?{{ item.regexp }}'
     line: '{{ item.line }}'
     state: present
   with_items:
-    - line: "PermitRootLogin no"
-      regexp: "^PermitRootLogin\ "
+    - line: "PermitRootLogin {{ permit_root_login }}"
+      regexp: "PermitRootLogin\ "
     - line: "PasswordAuthentication no"
-      regexp: "^PasswordAuthentication\ "
+      regexp: "PasswordAuthentication\ "
     - line: "PermitEmptyPasswords no"
-      regexp: "^PermitEmptyPasswords\ "
+      regexp: "PermitEmptyPasswords\ "
     - line: "StrictModes yes"
-      regexp: "^StrictModes\ "
+      regexp: "StrictModes\ "
     - line: "PubkeyAuthentication yes"
-      regexp: "^PubkeyAuthentication\ "
+      regexp: "PubkeyAuthentication\ "
   notify: Restart sshd
 ```
 
@@ -372,7 +372,7 @@ Also, when editing anything to do with `sudo`, *ALWAYS* use the utility `visudo`
 
 Run the playbook to test it, using `--check --diff` if you're not 100% sure what it will do yet.
 
-
+Examine everything carefully. Once you're ready, we'll apply this playbook to everything we've built so far.
 
 ### Applying the new base-playbook across our infrastructure
 
@@ -397,6 +397,23 @@ inferno.riff.cc ansible_user=root
 
 You'll note we didn't define the `[proxmox]` inventory group directly - instead, we defined a `[proxmox:children]` group, and then defined a `[proxmox_wingslab]` group. This allows us to define a group of hosts that are children of another group - in other words, we can define proxmox_wingslab and then set that group to be included in the general proxmox inventory group.
 
+Now, let's set some group_vars specifically for that group.
+
+*inventories/production/group_vars/proxmox_wingslab*
+```yaml
+---
+permit_root_login: "prohibit-password"
+
+additional_root_public_keys:
+    - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDYjoGmIZdLLYuPPjzuP8HpyGxYW4yaxpKlF8B4Z9mTT8BZvFv7nnxvtK70CIdUPXbewzweBR/LwaBAFi2AoXdavCmQE2u8upIAWQgmSLZ4tvNYkBzEv/Z2w90iJ7ZFruv7OqkjGaZAd4f7A1U6wShd/AcaKrA44m+Qr9nikRGlAPV/Zr2wxJJaivtA2lzsj4gV640bvhZ6QonY1w5FeZrO0ORq4wahP7bepHdLkznVVHiwgtFV/vI5qVfEp7R5zoAtzsiX/eEbCDdoqTNycdDZ6fklHF7zx7xYelV4dXxBIiaBcSYvIJ9xTqtVg2aVJ8M5YbBwsqGEYOCxoxh+vNAR root@inferno
+    - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDLcsNFQDzv796ULOpcuhoitZQnv3Wx1zb9qKxMjQoqE74A953afghdnfZm7cjnGPqnhRaHNr97l/ccdBRqyKo3jvHYN7wNyG8GxN5gRqhLqD00MumKL2eN79oilxLBEPt4eSL8CyukMG4WtCNQcZ+SHVoRvTjoxN6GafGbnVl36T3b9QgxxWR7dAqbs0cByGRZMdMYnpA2+eWUJ45p5Rzd9cRFHNnpFqb+K/n78J906D7TpXq6lck8Ya4bpBSHs8Np7DEfSeK15ROuGZsT69JnMZlKBCnCpjGG4Bl+d/IfeRZg9/hBkrZomsRwM61+8qD4/juDeKTb/ecyBYK7c7Gz root@sizer
+    - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCyYvndhIfnHd5bwgKQNq6DpGG/fd3XzClKVLTTYPeOF4ZZzUTyETtJliNCmIg0NlZVdAeoteQ1A78NgzY4F/8VDj58ZRqE4hIsazny8/ay0oYmXobU6Kwzx5lh9TgQJ3MQUAdZ21zxkZ9xxWM1YvQOX5LA2f4omE02MpSas1Du2UU9y9EToD5Pgu8ms5uxqJGRTGurJmPBJrampaXNHK6caGWm206j+l9Cuq/MU66flCXxQyR5MMKftKJkoumT9Rqz7Yn7b0s/jHX1du0mfRSA67eknWWTYVwIkLHlUBBWvJxPVfvQT/ANxAecRCmBGIzMCxj+tXs0p8TjnOphH5O3 root@al
+    - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCv62d4BofqCVYrRZOfNoXhDMUwwzcvPzRTTDGHxtyMPz6E5mRs3lUgeEHvxkt979QqdhSNXNgZA21JjCWhhyi/XbECwRslfFar5Hv9ElJNiugG0PrOnKT36U3i/b7ojnnFa/qVXm++G8/D5WvLRmC2Ts5VEWpO0HsDtTZQptTiy8sUEPmDUTNLBa9JTh+X5klkkWTirWwyvY1McFbtLqSl0qmpdV0sh/CxrJD2U2KoEFYgLODL2QekExrypMpTrq9tGRNGCud30kUWFagWqVSxtM9CJyDKN/HBOZXV/cVfSh29TyMrcBIlmiz07kPmWIyAz+sBpXB6T+e6W8Ho2Px9 root@ambellina
+    - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDKb6KOxFz5Vg4iZeWMKUnyLM+AzuhPg4/c5s8X+E3AyuPzoF2jhP36Z5iwlHwVUGrbwGDBI62iKq7KgNusG3X6+mfRm3JKANFqrF07m+fnoSBwHcVRluY8u9b+r73IWeNslrtyraSpRXxN9LiCtNWxoZbkzZFWZHPZNTiNGrMX5cELsxro5phD+KIiqXIdhql4Z1WR0mNXWVKUNguBZHU74WeUpARxCv/RTjKFkRJHOPjVSEKtoWz9rltT3p65guxKMyp941kcMLZii5izxUUayYlkKblyNH4XOuwoXPkdQiY+fOO45l4PDwyfivVt6u9LAY+Pb3C63va7q5/+X7/r root@monstar
+```
+
+Note that we've defined additional root keys for each of the machines within our cluster, and we've also set PermitRootLogin to "prohibit-password" instead of "no". This will allow us to log in as root using SSH keys, but not using a password. This is actually critical for Proxmox to operate, as many things ranging from live migrating VMs to visiting VM consoles require Proxmox hosts to be able to SSH to each other as root.
+
 We'll be very careful with this rollout - we'll combine the --check and --diff flags to see what Ansible would do, and only after reviewing the changes will we let them be applied to the Proxmox hosts.
 
 Let's run the playbook with the --check and --diff flags:
@@ -404,3 +421,15 @@ Let's run the playbook with the --check and --diff flags:
 ```bash
 wings@blackberry:~/projects/rifflabs-infrastructure$ ansible-playbook playbooks/base-playbook/deploy.yml -i ~/projects/rifflabs-infrastructure/inventories/production -u riff --ask-become-pass --check --diff
 ```
+
+Finally, let's run it with the --diff flag to see what changes it makes while actually applying the changes.
+
+Congratulations, you now have a basic playbook that can be applied to your infrastructure. You can add additional roles to this over time and apply them to your whole infrastructure in minutes.
+
+Next, we'll look at setting up Ansible Semaphore to provide a central place to run Ansible playbooks and see the status of our automation.
+
+:::info
+
+That got into the weeds a bit! Normally, Ansible is much easier and more approachable than that, but we're having to do some complex things with it - which requires some complex Ansible code.
+
+:::
