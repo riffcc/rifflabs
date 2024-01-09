@@ -127,4 +127,3 @@ wings@blackberry:~/projects/rifflabs-infrastructure/playbooks/base-playbook$ tre
 ```
 
 There's a great book by Jeff Geerling called [Ansible for DevOps](https://www.ansiblefordevops.com/), which we highly recommend. The book is now totally free and open source, too!
-
