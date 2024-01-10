@@ -12,7 +12,7 @@ A robot is a virtual machine which is used to perform specific lab tasks automat
 robot01 is a general purpose machine which we'll set up to do the following tasks:
 
 * Create a base Ansible playbook which can be used to configure any machines in the network - including itself.
-* Run an Ansible Semaphore server - https://semui.co/ - with the above playbook included in it.
+* Run an Ansible playbook to configure itself and the rest of the lab.
 * Bootstrap some basic infrastructure using Tinkerbell.
 
 ## Ansible

@@ -7,7 +7,7 @@ sidebar_position: 2
   The new tutorial will simply involve running a base playbook that
     * Starts with a single machine, robot01
     * Installs Ansible on robot01
-    * Uses Ansible on robot01 to configure robot01, set up Ansible Semaphore, and set up Tinkerbell
+    * Uses Ansible on robot01 to configure robot01, set up Ansible, and set up Tinkerbell
     * Uses Tinkerbell to provision a Kubernetes cluster
     * Uses Ansible to configure the Kubernetes cluster
 -->

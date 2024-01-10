@@ -68,11 +68,13 @@ Select `Discard`, and leave the Advanced settings alone. SSD emulation may be us
 
 Click Next.
 
-For CPU, use between four and six cores, and a single socket (this will usually be the kind of configuration you want for a virtual machine). For memory, use 4GiB - which you'll type into Proxmox as `4096` MiB. This is a good starting point for most VMs. You can always add more later, or lower it to a more sensible value if you gave it too much.
+For CPU, use between four and six cores, and a single socket (this will usually be the kind of configuration you want for a virtual machine). For memory, use 4GiB - which you'll type into Proxmox as `4096` MiB. This is a good starting point for most VMs. You can always add more later, or lower it to a more sensible value if you gave it too much. Select "Host" as your CPU's *Type*. This will allow you to use special CPU features like Nested Virtualisation, which we'll explore later.
 
 :::note
 
 You can't (easily) lower the amount of *storage* provisioned once a machine is created, unlike memory, CPU and other "composable" resources. So, it's better to start with a smaller amount of storage and increase it later if you need to.
+
+Using the Host CPU type is a good idea for most VMs, but be warned that if you run a heterogenous (diverse) environment, such as one with a blend of Intel and AMD CPUs, you may find issues live migrating VMs between hosts. This is because the CPU features available on one host may not be available on another. This is a problem that can be solved by using a CPU type that is common to all hosts, such as `x86-64-v2-AES` - do this for any VMs that absolutely need to be portable.
 
 :::
 
