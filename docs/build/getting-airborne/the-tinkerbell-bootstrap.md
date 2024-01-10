@@ -24,3 +24,5 @@ Once this is done, interestingly, we'll be able to use Tinkerbell to re-provisio
 ## Enabling nested virtualization
 We're going to enable a feature called Nested Virtualisation. If you're building a modern platform (see [TODO: Hardware]) and Proxmox VE, you'll likely already have this enabled. Either way, check out [this guide](https://pve.proxmox.com/wiki/Nested_Virtualization) for information on how to verify that it's available in your environment. In particular, you should go to your VM and check if it has "Host" as the CPU type.
 
+We'll be using this to run a VM *inside* our VM, which will then run Tinkerbell allowing other machines on the network to be setup and provisioned automatically.
+
