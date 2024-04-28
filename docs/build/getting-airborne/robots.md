@@ -13,7 +13,7 @@ robot01 is a general purpose machine which we'll set up to do the following task
 
 * Create a base Ansible playbook which can be used to configure any machines in the network - including itself.
 * Run an Ansible playbook to configure itself and the rest of the lab.
-* Bootstrap some basic infrastructure using Tinkerbell.
+* Bootstrap some basic infrastructure using The Foreman.
 
 ## Ansible
 Ansible is a tool for automating the configuration of machines. It's a very powerful tool, and we'll be using it to configure all of the machines in the lab. We'll be using it to configure robot01 itself, using itself.

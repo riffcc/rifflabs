@@ -2,6 +2,8 @@
 sidebar_position: 2
 ---
 
+# Building the base playbook
+
 <!-- 
   This will one day be replaced entirely by a "running the base playbook" tutorial.
   The new tutorial will simply involve running a base playbook that
@@ -12,7 +14,6 @@ sidebar_position: 2
     * Uses Ansible to configure the Kubernetes cluster
 -->
 
-# Building the base playbook
 Let's start by building a playbook which will configure the `robot01` machine. We'll start by configuring the DNS servers on the machine, so that it can resolve the names of other machines in the lab. You'll notice *this* step is already done, as I had begun working on the base playbook prior to this documentation.
 
 Let's test what it does!

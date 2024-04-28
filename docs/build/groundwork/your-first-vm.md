@@ -111,7 +111,7 @@ When prompted to select packages to install:
 
 * If it's a desktop with GPU passthrough, select `Debian desktop environment` and select `KDE`.
 
- ake sure to select `SSH server` and `standard system utilities` as well.
+Make sure to select `SSH server` and `standard system utilities` as well.
 
 Leave the rest unchecked unless you have a specific reason to install them.
 
